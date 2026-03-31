@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>학급 과제 체크판</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap');
+        
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #f8fafc;
+        }
+
+        .group-card {
+            border: 2px solid #333;
+            border-radius: 8px;
+            overflow: hidden;
+            background: white;
+        }
+
+        .group-header {
+            border-bottom: 2px solid #333;
+            padding: 8px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.25rem;
+            background-color: #fff;
+        }
+
+        .student-btn {
+            width: 100%;
+            height: 60px;
+            border-bottom: 1px solid #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            font-weight: 500;
+            transition: all 0.2s;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .student-btn:last-child {
+            border-bottom: none;
+        }
+
+        .student-btn.completed {
+            background-color: #f3f4f6 !important;
+            color: transparent;
+        }
+
+        .student-btn.completed::after {
+            content: '○';
+            position: absolute;
+            color: #ef4444;
+            font-size: 2.5rem;
+            font-weight: bold;
+        }
+
+        /* Group Colors from Image */
+        .bg-group-1 { background-color: #f3d0d0; }
+        .bg-group-2 { background-color: #ffc996; }
+        .bg-group-3 { background-color: #fff9c4; }
+        .bg-group-4 { background-color: #d1f2e1; }
+        .bg-group-5 { background-color: #c5d3ee; }
+        .bg-group-6 { background-color: #d1c4e9; }
+        
+        .empty-slot {
+            background-color: #d1f2e1; /* Same as group 4 */
+            height: 60px;
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+    <div class="max-w-5xl mx-auto">
+        <!-- Header Section -->
+        <div class="bg-white p-6 rounded-xl shadow-md mb-8 border-2 border-blue-200">
+            <h1 class="text-2xl font-bold mb-4 text-center text-blue-800">과제 확인 체크판</h1>
+            <div class="flex gap-4 items-center">
+                <span class="font-bold text-lg whitespace-nowrap">오늘의 과제:</span>
+                <input type="text" id="taskName" placeholder="여기에 과제 내용을 입력하세요 (예: 수학 익힘책 12-15쪽)" 
+                       class="w-full p-3 border-b-2 border-blue-400 focus:outline-none focus:border-blue-600 text-lg">
+                <button onclick="resetAll()" class="bg-gray-800 text-white px-6 py-3 rounded-lg font-bold hover:bg-black transition whitespace-nowrap">
+                    모두 초기화
+                </button>
+            </div>
+        </div>
+
+        <!-- Groups Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- 1모둠 -->
+            <div class="group-card">
+                <div class="group-header">1모둠</div>
+                <div class="student-btn bg-group-1" onclick="toggleStudent(this)">태영</div>
+                <div class="student-btn bg-group-1" onclick="toggleStudent(this)">재아</div>
+                <div class="student-btn bg-group-1" onclick="toggleStudent(this)">지아</div>
+                <div class="student-btn bg-group-1" onclick="toggleStudent(this)">지유</div>
+            </div>
+
+            <!-- 2모둠 -->
+            <div class="group-card">
+                <div class="group-header">2모둠</div>
+                <div class="student-btn bg-group-2" onclick="toggleStudent(this)">지한</div>
+                <div class="student-btn bg-group-2" onclick="toggleStudent(this)">채령</div>
+                <div class="student-btn bg-group-2" onclick="toggleStudent(this)">현우</div>
+                <div class="student-btn bg-group-2" onclick="toggleStudent(this)">유찬</div>
+            </div>
+
+            <!-- 3모둠 -->
+            <div class="group-card">
+                <div class="group-header">3모둠</div>
+                <div class="student-btn bg-group-3" onclick="toggleStudent(this)">지호</div>
+                <div class="student-btn bg-group-3" onclick="toggleStudent(this)">예림</div>
+                <div class="student-btn bg-group-3" onclick="toggleStudent(this)">현진</div>
+                <div class="student-btn bg-group-3" onclick="toggleStudent(this)">승우</div>
+            </div>
+
+            <!-- 4모둠 -->
+            <div class="group-card">
+                <div class="group-header">4모둠</div>
+                <div class="student-btn bg-group-4" onclick="toggleStudent(this)">루안</div>
+                <div class="student-btn bg-group-4" onclick="toggleStudent(this)">서아</div>
+                <div class="student-btn bg-group-4" onclick="toggleStudent(this)">예은</div>
+                <div class="empty-slot"></div>
+            </div>
+
+            <!-- 5모둠 -->
+            <div class="group-card">
+                <div class="group-header">5모둠</div>
+                <div class="student-btn bg-group-5" onclick="toggleStudent(this)">정우</div>
+                <div class="student-btn bg-group-5" onclick="toggleStudent(this)">채연</div>
+                <div class="student-btn bg-group-5" onclick="toggleStudent(this)">수현</div>
+                <div class="student-btn bg-group-5" onclick="toggleStudent(this)">아율</div>
+            </div>
+
+            <!-- 6모둠 -->
+            <div class="group-card">
+                <div class="group-header">6모둠</div>
+                <div class="student-btn bg-group-6" onclick="toggleStudent(this)">선율</div>
+                <div class="student-btn bg-group-6" onclick="toggleStudent(this)">서준</div>
+                <div class="student-btn bg-group-6" onclick="toggleStudent(this)">아윤</div>
+                <div class="student-btn bg-group-6" onclick="toggleStudent(this)">수아</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 학생 버튼 클릭 시 상태 전환
+        function toggleStudent(btn) {
+            btn.classList.toggle('completed');
+        }
+
+        // 모든 데이터 초기화
+        function resetAll() {
+            if (confirm('모든 체크를 초기화하시겠습니까?')) {
+                const buttons = document.querySelectorAll('.student-btn');
+                buttons.forEach(btn => {
+                    btn.classList.remove('completed');
+                });
+            }
+        }
+
+        // 페이지 로드 시 과제 이름 입력란에 포커스
+        window.onload = function() {
+            document.getElementById('taskName').focus();
+        };
+    </script>
+</body>
+</html>
